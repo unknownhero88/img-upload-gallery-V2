@@ -7,23 +7,23 @@ WORKDIR /build
 COPY pom.xml ./
 COPY src ./src
 
-# Build the application
-RUN mvn clean package -DskipTests
+# Build the application and copy dependencies
+RUN mvn dependency:copy-dependencies package -DskipTests
 
 # Stage 2: Runtime
 FROM eclipse-temurin:17-jre-jammy
 
 WORKDIR /app
 
-# Copy compiled files from build stage
+# Copy compiled classes and dependencies
 COPY --from=build /build/target/classes ./target/classes
+COPY --from=build /build/target/dependency ./target/dependency
 COPY --from=build /build/src/main/webapp ./src/main/webapp
 
 # Environment variable for Render
 ENV PORT=10000
 
-# Expose port for local reference (Render ignores EXPOSE)
 EXPOSE 10000
 
-# Run your Main class (adjust package if needed)
-CMD ["java", "-cp", "target/classes", "com.example.Main"]
+# Run the Main class with all dependencies on the classpath
+CMD ["java", "-cp", "target/classes:target/dependency/*", "com.example.Main"]
