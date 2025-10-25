@@ -31,7 +31,8 @@ public class Main {
         tomcat.getConnector(); // triggers connector creation
 
         // --- 3️⃣ Define Webapp Path ---
-        String webappDir = "src/main/webapp";
+        String baseDir = System.getProperty("user.dir");
+        String webappDir = baseDir + "/src/main/webapp";
         File webAppDirectory = new File(webappDir);
         if (!webAppDirectory.exists()) {
             throw new IllegalStateException("❌ Webapp folder not found at: " + webappDir);
@@ -41,7 +42,7 @@ public class Main {
         Context ctx = tomcat.addWebapp("", webAppDirectory.getAbsolutePath());
 
         // --- 4️⃣ Tell Tomcat where compiled classes live ---
-        File classesDir = new File("target/classes");
+        File classesDir = new File(baseDir + "/target/classes");
         if (!classesDir.exists()) {
             throw new IllegalStateException("❌ Compiled classes not found at: " + classesDir.getAbsolutePath() +
                     "\n➡️ Run `mvn clean package` first.");
