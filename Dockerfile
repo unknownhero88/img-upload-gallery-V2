@@ -15,19 +15,15 @@ FROM eclipse-temurin:17-jre-jammy
 
 WORKDIR /app
 
-# Copy compiled classes and dependencies
+# Copy compiled files from build stage
 COPY --from=build /build/target/classes ./target/classes
-COPY --from=build /build/target/dependency ./target/dependency
-
-# Copy webapp (JSPs, web.xml, etc.)
 COPY --from=build /build/src/main/webapp ./src/main/webapp
 
 # Environment variable for Render
 ENV PORT=10000
 
-# Render automatically assigns a random port,
-# so we map our Java app to it dynamically
+# Expose port for local reference (Render ignores EXPOSE)
 EXPOSE 10000
 
-# Run the embedded Tomcat starter class
-CMD ["java", "-cp", "target/classes:target/dependency/*", "com.example.MainClass"]
+# Run your Main class (adjust package if needed)
+CMD ["java", "-cp", "target/classes", "com.example.Main"]
