@@ -117,7 +117,7 @@ mvn clean package
 
 3. Run the application:
 ```bash
-java -jar target/Img-Url-con.jar
+java -jar target/Img-Url-con-v2.jar
 ```
 
 4. Access the application:
@@ -252,9 +252,7 @@ mvn test
 4. Push to branch (`git push origin feature/AmazingFeature`)
 5. Open Pull Request
 
-## 📄 License
 
-This project is licensed under the MIT License.
 
 ## 👨‍💻 Author
 
